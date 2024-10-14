@@ -2,6 +2,7 @@ import readline from 'readline';
 import { homedir } from 'os';
 import { changeDirectory } from './navigation.js';
 import { list } from './ls.js';
+import { cat } from './cat.js';
 
 const start = () => {
     function getUsername() {
@@ -28,13 +29,18 @@ const start = () => {
 
         if (command === '.exit') {
             process.exit(0);
-        } else if (command.startsWith('cd ')) {
+        } else if (command.startsWith('cd ')) { 
             const path = command.slice(3).trim();
             changeDirectory(path);
         } else if (command === 'up') {
             changeDirectory('..');
         } else if (command === 'ls') {
             list();
+            readlineInstance.prompt();
+        } else if (command.startsWith('cat ')) {
+            const filePath = command.slice(4).trim();
+            cat(filePath);
+            readlineInstance.prompt();
         } else {
             console.log("Invalid input");
         }

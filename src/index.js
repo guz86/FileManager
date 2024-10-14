@@ -1,4 +1,5 @@
 import readline from 'readline';
+import { homedir } from 'os';
 
 const start = () => {
 
@@ -28,6 +29,8 @@ const start = () => {
         if (input.trim() === '.exit') {
             exit();
         }
+
+        console.log(`You are currently in ${process.cwd()}`);
     });
 
     process.on('SIGINT', () => {
@@ -35,6 +38,7 @@ const start = () => {
     });
 
     console.log(`Welcome to the File Manager, ${username}!`);
+    process.chdir(homedir());
     console.log(`You are currently in ${process.cwd()}`);
 
 }

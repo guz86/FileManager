@@ -13,7 +13,6 @@ const start = () => {
         return 'Nobody';
     }
     const username = getUsername();
-    console.log(`Welcome to the File Manager, ${username}!`);
 
     function exit() {
         console.log(`Thank you for using File Manager, ${username}, goodbye!`);
@@ -34,6 +33,9 @@ const start = () => {
     process.on('SIGINT', () => {
         exit();
     });
+
+    console.log(`Welcome to the File Manager, ${username}!`);
+    console.log(`You are currently in ${process.cwd()}`);
 
 }
 

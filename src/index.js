@@ -51,7 +51,12 @@ const start = () => {
         } else if (command.startsWith('cp ')) {
             const [src, dest] = command.slice(3).trim().split(' ');
             copyFile(src, dest);
-        } else {
+        }
+        else if (command.startsWith('mv ')) {
+            const [src, dest] = command.slice(3).trim().split(' ');
+            moveFile(src, dest);
+        }
+        else {
             console.log("Invalid input");
         }
 

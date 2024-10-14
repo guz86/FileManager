@@ -13,6 +13,7 @@ const start = () => {
 
         return 'Nobody';
     }
+
     const username = getUsername();
 
     function exit() {
@@ -22,7 +23,8 @@ const start = () => {
 
     const readlineInstance = readline.createInterface({
         input: process.stdin,
-        output: process.stdout
+        output: process.stdout,
+        prompt: 'Enter a command: '
     });
 
     readlineInstance.on('line', (input) => {
@@ -31,6 +33,8 @@ const start = () => {
         }
 
         console.log(`You are currently in ${process.cwd()}`);
+
+        readlineInstance.prompt();
     });
 
     process.on('SIGINT', () => {
@@ -41,6 +45,7 @@ const start = () => {
     process.chdir(homedir());
     console.log(`You are currently in ${process.cwd()}`);
 
-}
+    readlineInstance.prompt();
+};
 
 start();

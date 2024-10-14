@@ -4,6 +4,7 @@ import { changeDirectory } from './navigation.js';
 import { list } from './ls.js';
 import { cat } from './cat.js';
 import { create } from './create.js';
+import { renameFile } from './rename.js';
 
 const start = () => {
     function getUsername() {
@@ -45,6 +46,10 @@ const start = () => {
         } else if (command.startsWith('add ')) {
             const fileName = command.slice(4).trim();
             create(fileName);
+            readlineInstance.prompt();
+        } else if (command.startsWith('rn ')) {
+            const [oldPath, newFileName] = command.slice(3).trim().split(' ');
+            renameFile(oldPath, newFileName);
             readlineInstance.prompt();
         } else {
             console.log("Invalid input");

@@ -5,6 +5,7 @@ import { list } from './ls.js';
 import { cat } from './cat.js';
 import { create } from './create.js';
 import { renameFile } from './rename.js';
+import { copyFile } from './copy.js';
 
 const start = () => {
     function getUsername() {
@@ -38,19 +39,18 @@ const start = () => {
             changeDirectory('..');
         } else if (command === 'ls') {
             list();
-            readlineInstance.prompt();
         } else if (command.startsWith('cat ')) {
             const filePath = command.slice(4).trim();
             cat(filePath);
-            readlineInstance.prompt();
         } else if (command.startsWith('add ')) {
             const fileName = command.slice(4).trim();
             create(fileName);
-            readlineInstance.prompt();
         } else if (command.startsWith('rn ')) {
             const [oldPath, newFileName] = command.slice(3).trim().split(' ');
             renameFile(oldPath, newFileName);
-            readlineInstance.prompt();
+        } else if (command.startsWith('cp ')) {
+            const [src, dest] = command.slice(3).trim().split(' ');
+            copyFile(src, dest);
         } else {
             console.log("Invalid input");
         }

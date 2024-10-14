@@ -3,6 +3,7 @@ import { homedir } from 'os';
 import { changeDirectory } from './navigation.js';
 import { list } from './ls.js';
 import { cat } from './cat.js';
+import { create } from './create.js';
 
 const start = () => {
     function getUsername() {
@@ -29,7 +30,7 @@ const start = () => {
 
         if (command === '.exit') {
             process.exit(0);
-        } else if (command.startsWith('cd ')) { 
+        } else if (command.startsWith('cd ')) {
             const path = command.slice(3).trim();
             changeDirectory(path);
         } else if (command === 'up') {
@@ -40,6 +41,10 @@ const start = () => {
         } else if (command.startsWith('cat ')) {
             const filePath = command.slice(4).trim();
             cat(filePath);
+            readlineInstance.prompt();
+        } else if (command.startsWith('add ')) {
+            const fileName = command.slice(4).trim();
+            create(fileName);
             readlineInstance.prompt();
         } else {
             console.log("Invalid input");

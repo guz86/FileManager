@@ -7,6 +7,8 @@ import { create } from './create.js';
 import { renameFile } from './rename.js';
 import { copyFile } from './copy.js';
 import { remove } from './remove.js';
+import { printEOL, printCPUsInfo, printHomeDir, printCurrentUser, printArchitecture } from './os.js';
+
 
 const start = () => {
     function getUsername() {
@@ -60,6 +62,21 @@ const start = () => {
         else if (command.startsWith('rm ')) {
             const filePath = command.slice(3).trim();
             remove(filePath);
+        } else if (command === 'os --EOL') {
+            printEOL();
+            readlineInstance.prompt();
+        } else if (command === 'os --cpus') {
+            printCPUsInfo();
+            readlineInstance.prompt();
+        } else if (command === 'os --homedir') {
+            printHomeDir();
+            readlineInstance.prompt();
+        } else if (command === 'os --username') {
+            printCurrentUser();
+            readlineInstance.prompt();
+        } else if (command === 'os --architecture') {
+            printArchitecture();
+            readlineInstance.prompt();
         }
         else {
             console.log("Invalid input");

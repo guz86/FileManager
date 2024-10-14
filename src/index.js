@@ -9,6 +9,7 @@ import { copyFile } from './copy.js';
 import { remove } from './remove.js';
 import { printEOL, printCPUsInfo, printHomeDir, printCurrentUser, printArchitecture } from './os.js';
 import { hashFile } from './hash.js';
+import { compressFile, decompressFile } from './compress.js';
 
 
 const start = () => {
@@ -76,6 +77,12 @@ const start = () => {
         } else if (command.startsWith('hash ')) {
             const filePath = command.slice(5).trim();
             hashFile(filePath);
+        } else if (command.startsWith('compress ')) {
+            const [source, destination] = command.slice(9).trim().split(' ');
+            compressFile(source, destination);
+        } else if (command.startsWith('decompress ')) {
+            const [source, destination] = command.slice(11).trim().split(' ');
+            decompressFile(source, destination);
         }
         else {
             console.log("Invalid input");

@@ -6,6 +6,7 @@ import { cat } from './cat.js';
 import { create } from './create.js';
 import { renameFile } from './rename.js';
 import { copyFile } from './copy.js';
+import { remove } from './remove.js';
 
 const start = () => {
     function getUsername() {
@@ -55,6 +56,10 @@ const start = () => {
         else if (command.startsWith('mv ')) {
             const [src, dest] = command.slice(3).trim().split(' ');
             moveFile(src, dest);
+        }
+        else if (command.startsWith('rm ')) {
+            const filePath = command.slice(3).trim();
+            remove(filePath);
         }
         else {
             console.log("Invalid input");

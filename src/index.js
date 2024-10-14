@@ -1,6 +1,7 @@
 import readline from 'readline';
 import { homedir } from 'os';
 import { changeDirectory } from './navigation.js';
+import { list } from './ls.js';
 
 const start = () => {
     function getUsername() {
@@ -32,6 +33,8 @@ const start = () => {
             changeDirectory(path);
         } else if (command === 'up') {
             changeDirectory('..');
+        } else if (command === 'ls') {
+            list();
         } else {
             console.log("Invalid input");
         }

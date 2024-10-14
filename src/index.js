@@ -1,5 +1,6 @@
 import readline from 'readline';
 import { homedir } from 'os';
+import { resolve, parse, dirname } from 'path';
 
 const start = () => {
     function getUsername() {
@@ -20,15 +21,47 @@ const start = () => {
         process.exit(0);
     }
 
-    function handleCommand(input) {
-        const trimmedInput = input.trim();
+    function changeDirectory(newDir) {
+        const currentDir = process.cwd();
+        const rootDir = parse(currentDir).root;
 
-        if (trimmedInput === '.exit') {
+        const targetDir = resolve(currentDir, newDir);
+
+        if (targetDir === rootDir) {
+            console.log("You are already in the root directory.");
+            console.log(`You are currently in ${process.cwd()}`);
+            return;
+        }
+
+        if (!targetDir.startsWith(rootDir)) {
+            console.log("You can't go upper than root directory");
+            console.log(`You are currently in ${process.cwd()}`);
+            return;
+        }
+
+        if (dirname(targetDir) === rootDir) {
+            console.log("You can't go upper than root directory");
+            console.log(`You are currently in ${process.cwd()}`);
+            return;
+        }
+
+        process.chdir(targetDir);
+        console.log(`You are now in ${process.cwd()}`);
+    }
+
+    function handleCommand(input) {
+        const trimmedInput = input.trim().split(' ');
+
+        if (trimmedInput[0] === '.exit') {
             exit();
-        } else if (trimmedInput === '') {
+        } else if (trimmedInput[0] === 'cd') {
+            const newDir = trimmedInput[1] || '';
+            changeDirectory(newDir);
+        } else if (trimmedInput[0] === '') {
             return;
         } else {
             console.log('Invalid input');
+            console.log(`You are currently in ${process.cwd()}`);
         }
     }
 
@@ -40,7 +73,6 @@ const start = () => {
 
     readlineInstance.on('line', (input) => {
         handleCommand(input);
-        console.log(`You are currently in ${process.cwd()}`);
         readlineInstance.prompt();
     });
 

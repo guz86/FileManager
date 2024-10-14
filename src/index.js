@@ -8,6 +8,7 @@ import { renameFile } from './rename.js';
 import { copyFile } from './copy.js';
 import { remove } from './remove.js';
 import { printEOL, printCPUsInfo, printHomeDir, printCurrentUser, printArchitecture } from './os.js';
+import { hashFile } from './hash.js';
 
 
 const start = () => {
@@ -64,19 +65,17 @@ const start = () => {
             remove(filePath);
         } else if (command === 'os --EOL') {
             printEOL();
-            readlineInstance.prompt();
         } else if (command === 'os --cpus') {
             printCPUsInfo();
-            readlineInstance.prompt();
         } else if (command === 'os --homedir') {
             printHomeDir();
-            readlineInstance.prompt();
         } else if (command === 'os --username') {
             printCurrentUser();
-            readlineInstance.prompt();
         } else if (command === 'os --architecture') {
             printArchitecture();
-            readlineInstance.prompt();
+        } else if (command.startsWith('hash ')) {
+            const filePath = command.slice(5).trim();
+            hashFile(filePath);
         }
         else {
             console.log("Invalid input");

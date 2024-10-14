@@ -1,6 +1,6 @@
 import readline from 'readline';
 import { homedir } from 'os';
-import { resolve, parse, dirname } from 'path';
+import { changeDirectory } from './navigation.js';
 
 const start = () => {
     function getUsername() {
@@ -16,55 +16,6 @@ const start = () => {
 
     const username = getUsername();
 
-    function exit() {
-        console.log(`Thank you for using File Manager, ${username}, goodbye!`);
-        process.exit(0);
-    }
-
-    function changeDirectory(newDir) {
-        const currentDir = process.cwd();
-        const rootDir = parse(currentDir).root;
-
-        const targetDir = resolve(currentDir, newDir);
-
-        if (targetDir === rootDir) {
-            console.log("You are already in the root directory.");
-            console.log(`You are currently in ${process.cwd()}`);
-            return;
-        }
-
-        if (!targetDir.startsWith(rootDir)) {
-            console.log("You can't go upper than root directory");
-            console.log(`You are currently in ${process.cwd()}`);
-            return;
-        }
-
-        if (dirname(targetDir) === rootDir) {
-            console.log("You can't go upper than root directory");
-            console.log(`You are currently in ${process.cwd()}`);
-            return;
-        }
-
-        process.chdir(targetDir);
-        console.log(`You are now in ${process.cwd()}`);
-    }
-
-    function handleCommand(input) {
-        const trimmedInput = input.trim().split(' ');
-
-        if (trimmedInput[0] === '.exit') {
-            exit();
-        } else if (trimmedInput[0] === 'cd') {
-            const newDir = trimmedInput[1] || '';
-            changeDirectory(newDir);
-        } else if (trimmedInput[0] === '') {
-            return;
-        } else {
-            console.log('Invalid input');
-            console.log(`You are currently in ${process.cwd()}`);
-        }
-    }
-
     const readlineInstance = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -72,18 +23,33 @@ const start = () => {
     });
 
     readlineInstance.on('line', (input) => {
-        handleCommand(input);
+        const command = input.trim();
+
+        if (command === '.exit') {
+            process.exit(0);
+        } else if (command.startsWith('cd ')) {
+            const path = command.slice(3).trim();
+            changeDirectory(path);
+        } else if (command === 'up') {
+            changeDirectory('..');
+        } else {
+            console.log("Invalid input");
+        }
+
+        console.log(`You are currently in ${process.cwd()}`);
         readlineInstance.prompt();
     });
 
     process.on('SIGINT', () => {
-        exit();
+        process.exit(0);
     });
+
+    process.on('exit', () => console.log(`\nThank you for using File Manager, ${username}, goodbye!`));
 
     console.log(`Welcome to the File Manager, ${username}!`);
     process.chdir(homedir());
     console.log(`You are currently in ${process.cwd()}`);
     readlineInstance.prompt();
-};
+}
 
 start();
